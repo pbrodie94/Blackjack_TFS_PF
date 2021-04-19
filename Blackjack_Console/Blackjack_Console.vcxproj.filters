@@ -27,6 +27,12 @@
     <ClCompile Include="BlackjackDealer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CardDeck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayingCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlackjackGame.h">
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlackjackDealer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CardDeck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayingCard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,17 @@
 #include "BlackjackDealer.h"
 
-#include <iostream>
 
+BlackjackDealer::BlackjackDealer(int numDecks)
+{
+	//Create deck
+}
 
+void CreateDeck(int numDecks)
+{
+	
+}
+
+void DealCards()
+{
+
+}

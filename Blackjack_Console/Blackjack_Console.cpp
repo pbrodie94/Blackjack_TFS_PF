@@ -1,5 +1,4 @@
 // Blackjack_Console.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
 #include "BlackjackGame.h"
@@ -8,8 +7,6 @@ using namespace std;
 
 int main()
 {
-	BlackjackGame game; //Game object
-
 	int deckSize = 1; //Number of decks
 	bool loopAgain = true; //While loop condition
 
@@ -25,7 +22,10 @@ int main()
 		if (deckSize >= 1 && deckSize <= 8)
 		{
 			//Start game with decksize selection
-			//game = BlackjackGame(deckSize);
+			BlackjackGame game = BlackjackGame(deckSize);
+
+			//Delete object once the game is finished.
+			delete &game;
 
 			//Once game finishes, restart?
 			string goSelection = "";

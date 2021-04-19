@@ -1,15 +1,34 @@
 #include "BlackjackGame.h"
 
+BlackjackDealer dealer;
+BlackjackPlayer player;
 
-	void StartGame()
-	{
-		//Create card deck
+int playerBet = 0; //The players bet. When the player wins, they will recieve double this value back
 
-		cout << "Starting Game";
-	}
+BlackjackGame::BlackjackGame(int deckSize)
+{
+	cout << endl << "Initializing game..." << endl;
 
-	void DealCards()
-	{
-		//Deal cards for the game
+	dealer = BlackjackDealer(deckSize);
+	player = BlackjackPlayer(1000, &dealer);
 
-	}
+	StartRound();
+}
+
+void StartRound()
+{
+	playerBet = player.PlaceBet();
+
+	dealer.DealCards();
+}
+
+void PlayGame()
+{
+	//Player takes turn
+
+	//Dealer takes turn
+
+	//If neither player or dealer busted, check who has the higher card value
+
+	//If players chips are not 0, start new round
+}
