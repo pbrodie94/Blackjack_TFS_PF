@@ -1,122 +1,90 @@
 #include "BlackjackPlayer.h"
+#include "BlackjackHand.h"
 
-int chips = 0; //Number of chips available to the player to bet with
+#include <iostream>
 
-string cardOne = ""; //First card in hand
-string cardTwo = ""; //Second card in hand
-int cardValue = 0; //Value of cards in hand
+using namespace std; 
 
-BlackjackDealer *dealer = nullptr;
+BlackjackHand handOne; 
+BlackjackHand handTwo;
 
-BlackjackPlayer::BlackjackPlayer(int startChips, BlackjackDealer *d)
+BlackjackPlayer::BlackjackPlayer()
 {
-	chips = startChips;
-	dealer = d;
+	BlackjackPlayer::chips = 1000;
+	BlackjackPlayer::split = false;
 }
 
-int PlaceBet()
+BlackjackPlayer::BlackjackPlayer(int startingChips)
 {
-	int bet = 0;
+	BlackjackPlayer::chips = startingChips;
+	BlackjackPlayer::split = false;
+}
 
-	//Display chips
-	cout << endl << "Chips: " << chips << endl;
-
-	//Ask how much to bet
-	bool invalid = false;
+int BlackjackPlayer::PlaceBet()
+{
+	int bet;
+	bool invalidBet = false;
 
 	do {
+		cout << "Your Chips: $" << BlackjackPlayer::chips << "\n";
 		cout << "How much would you like to bet? ";
 		cin >> bet;
 
-		if (bet > chips || bet <= 0)
+		if (bet > 0 && bet < BlackjackPlayer::chips)
 		{
-			cout << endl << "Invalid bet, please try again" << endl;
-
-			invalid = true;
+			invalidBet = false;
 		}
 		else {
-
-			invalid = false;
+			
+			cout << "\n\n Invalid bet, please reenter. \n" << endl;
+			invalidBet = true;
 		}
 
-	} while (invalid);
+		cout << endl;
 
-	//Subtract from chips
-	chips -= bet;
+	} while (invalidBet);
+
+	BlackjackPlayer::chips -= bet;
+
+	cout << "\nRemaining chips: " << BlackjackPlayer::chips << "\n" << endl;
 
 	return bet;
-
 }
 
-void TakeTurn()
+void BlackjackPlayer::AddCards(PlayingCard newCard)
 {
-	char move;
-	bool turnNotFinished = true;
+	if (!handOne.stand)
+	{
+		handOne.AddCardName(newCard.GetCardName());
 
-	//Display cards in hand
-	cout << endl << "Your hand is: " << cardOne << " and " << cardTwo << " and you're at " << cardValue << endl;
+		handOne.AddCardValue(newCard.GetCardNumber());
+	}
+}
 
-	do {
+void BlackjackPlayer::DisplayHand()
+{
+	cout << handOne.cardNames << "\n";
+	cout << "Total: " << handOne.handValue << "\n";
 
-		cout << "Please enter: 'H' - Hit, 'S' - Stand: ";
-		cin >> move;
+	if (BlackjackPlayer::split)
+	{
+		cout << handTwo.cardNames << "\n";
+		cout << "Total: " << handTwo.handValue << "\n";
+	}
 
-		putchar(toupper(move));
+	cout << endl;
+}
 
-		PlayingCard newCard = PlayingCard();
+void BlackjackPlayer::WinHand(int winnings)
+{
+	cout << "You won $" << winnings << "!";
 
-		switch (move)
-		{
+	BlackjackPlayer::chips += winnings;
+}
 
-		case 'H':
-			//Hit
-			//Deal another card, display the name and add to the value
-
-			//newCard = dealer->Hit();
-
-			//Add the value of the newly drawn card
-			//Print name of the newly drawn card, and the new card value
-
-			if (cardValue > 21)
-			{
-				//Lose
-				cout << endl << "BUST!" << endl;
-
-				turnNotFinished = false;
-			}
-			else if (cardValue == 21)
-			{
-				//Max value, should not allow any more hits
-
-				cout << endl << cardValue << "!" << endl;
-
-				turnNotFinished = false;
-			}
-			else {
-
-				//Under 21, ask the player what they'd like to do further
-
-				turnNotFinished = true;
-			}
-
-			break;
-
-		case 'S':
-
-			//Turn finished
-
-			turnNotFinished = false;
-
-			break;
-
-		default:
-			cout << endl << "Invalid input, please try again.\n \n";
-
-			turnNotFinished = true;
-
-			break;
-		}
-
-	} while (turnNotFinished);
-
+void BlackjackPlayer::ResetHand()
+{
+	handOne = BlackjackHand();
+	handTwo = BlackjackHand();
+	BlackjackPlayer::split = false;
 }

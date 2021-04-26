@@ -139,16 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlackjackDealer.cpp" />
     <ClCompile Include="BlackjackGame.cpp" />
+    <ClCompile Include="BlackjackHand.cpp" />
     <ClCompile Include="BlackjackPlayer.cpp" />
     <ClCompile Include="Blackjack_Console.cpp" />
     <ClCompile Include="CardDeck.cpp" />
     <ClCompile Include="PlayingCard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlackjackDealer.h" />
     <ClInclude Include="BlackjackGame.h" />
+    <ClInclude Include="BlackjackHand.h" />
     <ClInclude Include="BlackjackPlayer.h" />
     <ClInclude Include="CardDeck.h" />
     <ClInclude Include="PlayingCard.h" />

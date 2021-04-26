@@ -1,5 +1,8 @@
 ﻿  BlackjackGame.cpp
+  BlackjackHand.cpp
   BlackjackPlayer.cpp
   Blackjack_Console.cpp
+  CardDeck.cpp
+  PlayingCard.cpp
   Generating Code...
   Blackjack_Console.vcxproj -> C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Debug\Blackjack_Console.exe

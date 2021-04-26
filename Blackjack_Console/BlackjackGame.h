@@ -1,7 +1,5 @@
 #pragma once
 
-#include "BlackjackDealer.h"
-#include "BlackjackPlayer.h"
 
 #include <iostream>
 
@@ -15,8 +13,12 @@ public:
 
 private:
 
-	void StartRound() {}; //Starts another round starting with bets, and then dealing the cards
+	void StartRound(); //Starts another round starting with bets, and then dealing the cards
 
 	void PlayGame(); //Gameplay loop, has player take turn, and then dealer take turn.
+
+	void PlayerTurn();
+
+	void DealerTurn();
 };
 

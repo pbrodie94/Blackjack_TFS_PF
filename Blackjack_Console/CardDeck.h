@@ -1,20 +1,27 @@
 #pragma once
 
 #include <iostream>
+#include "PlayingCard.h"
 
 using namespace std;
 
 class CardDeck
 {
-public:
+private:
 
-	CardDeck(int, int) {}; //Initializes deck taking in how many decks (from 1 to 8) and how many jokers
-
-	string DrawCard(int); //Draws a card from the deck and returns it as a string. takes in number of cards to be drawn
+	void CreateDeck(); //Creates the deck
 
 	void ShuffleDeck(); //Shuffles the deck
 
-	void Discard(); //Discards a card from the deck when finished. Puts it into a discard pile to be shuffled back in when necessary
+public:
+
+	CardDeck() {};
+
+	CardDeck(int); //Initializes deck taking in how many decks (from 1 to 8)
+
+	PlayingCard DrawCard(); //Draws a card from the deck and returns it
+
+	void DestroyDeck(); //Destroys the card deck 
 
 };
 

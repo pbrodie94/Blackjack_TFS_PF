@@ -1,24 +1,31 @@
 #pragma once
 
-#include "BlackjackDealer.h"
-#include "BlackjackDealer.h"
 #include "PlayingCard.h"
 
-#include <iostream>
-
-using namespace std;
 
 class BlackjackPlayer
 {
+private:
+
+	int chips; //Number of chips available to bet with
+
 public:
+	
+	BlackjackPlayer();
 
-	BlackjackPlayer() {};
+	BlackjackPlayer(int); //Adds number of chips player has
 
-	BlackjackPlayer(int, BlackjackDealer*); //Initializes player and gives them their starting chips
+	int PlaceBet(); //Allows player to place a bet
 
-	int PlaceBet() { return 0; }; //Returns playuer's bet
+	void AddCards(PlayingCard); //Adds a new card when dealt
 
-	void TakeTurn(); //Allows player to take their turn
+	void DisplayHand(); //Displays the cards in hand
+
+	void WinHand(int); //Recieves winnings and adds them to the players chips
+
+	void ResetHand(); //Resets hand
+
+	bool split;
 
 };
 

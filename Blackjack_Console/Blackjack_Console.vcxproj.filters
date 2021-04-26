@@ -21,16 +21,16 @@
     <ClCompile Include="BlackjackGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlackjackPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BlackjackDealer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CardDeck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayingCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackjackPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackjackHand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,16 +38,16 @@
     <ClInclude Include="BlackjackGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BlackjackPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BlackjackDealer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CardDeck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayingCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackjackPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackjackHand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
