@@ -15,7 +15,7 @@ int main()
 
 	do {
 		//Get number of decks for game
-		cout << "How many decks would you like to use? Please choose a number between 1 and 8 ";
+		cout << "How many decks would you like to use? Please choose a number between 1 and 8: ";
 		cin >> deckSize;
 
 		//Check if valid deck size

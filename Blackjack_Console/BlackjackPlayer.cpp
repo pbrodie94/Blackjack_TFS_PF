@@ -30,7 +30,7 @@ int BlackjackPlayer::PlaceBet()
 		cout << "How much would you like to bet? ";
 		cin >> bet;
 
-		if (bet > 0 && bet < BlackjackPlayer::chips)
+		if (bet > 0 && bet <= BlackjackPlayer::chips)
 		{
 			invalidBet = false;
 		}
@@ -46,18 +46,26 @@ int BlackjackPlayer::PlaceBet()
 
 	BlackjackPlayer::chips -= bet;
 
-	cout << "\nRemaining chips: " << BlackjackPlayer::chips << "\n" << endl;
+	cout << "\nRemaining chips: $" << BlackjackPlayer::chips << "\n" << endl;
 
 	return bet;
 }
 
 void BlackjackPlayer::AddCards(PlayingCard newCard)
 {
+	handOne.AddCardName(newCard.GetCardName());
+
+	handOne.AddCardValue(newCard.GetCardNumber());
+}
+
+void BlackjackPlayer::Stand()
+{
 	if (!handOne.stand)
 	{
-		handOne.AddCardName(newCard.GetCardName());
-
-		handOne.AddCardValue(newCard.GetCardNumber());
+		handOne.stand = true;
+	}
+	else {
+		handTwo.stand = true;
 	}
 }
 
@@ -75,11 +83,14 @@ void BlackjackPlayer::DisplayHand()
 	cout << endl;
 }
 
-void BlackjackPlayer::WinHand(int winnings)
+int BlackjackPlayer::GetHandValue()
 {
-	cout << "You won $" << winnings << "!";
+	return handOne.handValue;
+}
 
-	BlackjackPlayer::chips += winnings;
+void BlackjackPlayer::AddChips(int c)
+{
+	BlackjackPlayer::chips += c;
 }
 
 void BlackjackPlayer::ResetHand()
@@ -87,4 +98,9 @@ void BlackjackPlayer::ResetHand()
 	handOne = BlackjackHand();
 	handTwo = BlackjackHand();
 	BlackjackPlayer::split = false;
+}
+
+bool BlackjackPlayer::IsBlackjack()
+{
+	return handOne.blackJack;
 }

@@ -19,13 +19,21 @@ public:
 
 	void AddCards(PlayingCard); //Adds a new card when dealt
 
+	void Stand(); //Stands current hand
+
 	void DisplayHand(); //Displays the cards in hand
 
-	void WinHand(int); //Recieves winnings and adds them to the players chips
+	int GetHandValue(); //Returns value of hand
+
+	void AddChips(int); //Recieves winnings and adds them to the players chips
 
 	void ResetHand(); //Resets hand
 
+	bool IsBlackjack(); 
+
 	bool split;
+
+	int GetChips() { return chips; } //Returns chips
 
 };
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <ctime>
 
 int numDecks = 1;
 vector <PlayingCard>deck;
@@ -64,8 +65,10 @@ PlayingCard CardDeck::DrawCard()
 
 void CardDeck::ShuffleDeck()
 {
-	unsigned seed = 0;
-	shuffle(deck.begin(), deck.end(), default_random_engine(seed));
+	//unsigned seed = 0;
+	//shuffle(deck.begin(), deck.end(), default_random_engine(seed));
+	srand(time(NULL));
+	random_shuffle(deck.begin(), deck.end());
 }
 
 void CardDeck::DestroyDeck()
