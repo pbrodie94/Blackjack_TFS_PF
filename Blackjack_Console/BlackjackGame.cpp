@@ -73,11 +73,18 @@ void BlackjackGame::PlayGame()
 void BlackjackGame::PlayerTurn()
 {
 	char move = NULL;
+	bool secondHand = false;
 	bool turnNotDone = false;
 
 	//Check if both beginning cards have the same value, if so offer split
 	do {
-		cout << "Type 'H' - to hit, 'D' - to Double Down, 'S' - to stand: ";
+		if (player.canSplit && !player.split)
+		{
+			cout << "Type 'H' - to hit, 'D' - to Double Down, 'P' - To Split, 'S' - to stand: ";
+		}
+		else {
+			cout << "Type 'H' - to hit, 'D' - to Double Down, 'S' - to stand: ";
+		}
 		cin >> move;
 		cout << endl;
 
@@ -97,7 +104,16 @@ void BlackjackGame::PlayerTurn()
 			//Stand
 			player.Stand();
 
-			turnNotDone = false;
+			if (player.split && !secondHand)
+			{
+				cout << "\nSecond Hand\n" << endl;
+
+				secondHand = true;
+				turnNotDone = true;
+			}
+			else {
+				turnNotDone = false;
+			}
 			break;
 
 		case 'D':
@@ -125,6 +141,21 @@ void BlackjackGame::PlayerTurn()
 
 		case 'P':
 			//Split
+
+			if (player.canSplit && !player.split && player.GetChips() >= playerBet)
+			{
+				player.Split(deck.DrawCard(), deck.DrawCard());
+
+				player.TakeChips(playerBet);
+				playerBet *= 2;
+
+				cout << "\nNew bet: $" << playerBet << "\n" << endl;
+				player.DisplayHand();
+			}
+			else {
+				cout << "\nCannot perform this action, please try another move.\n" << endl;
+			}
+
 			turnNotDone = true;
 			break;
 
@@ -135,10 +166,26 @@ void BlackjackGame::PlayerTurn()
 			break;
 		}
 
-		if (player.GetHandValue() > 21)
+		if (player.GetHandValue(1) > 21 && !secondHand)
 		{
 			cout << "BUST!\n" << endl;
+			
+			if (!player.split)
+			{
+				turnNotDone = false;
+			}
+			else {
+				player.Stand();
+				cout << "\nSecond Hand\n" << endl;
+				secondHand = true;
+				turnNotDone = true;
+			}
+		}
 
+		if (player.split && player.GetHandValue(2) > 21)
+		{
+			cout << "BUST!\n" << endl;
+			player.Stand();
 			turnNotDone = false;
 		}
 
@@ -152,7 +199,7 @@ void BlackjackGame::DealerTurn()
 	dealer.TakeTurn();
 	dealer.DisplayCards();
 
-	if (player.GetHandValue() > 21)
+	if (player.GetHandValue(1) > 21)
 	{
 		hitAgain = false;
 	}
@@ -162,7 +209,7 @@ void BlackjackGame::DealerTurn()
 		dealer.AddCard(deck.DrawCard());
 		dealer.DisplayCards();
 
-		if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue())
+		if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue(1))
 		{
 			hitAgain = false;
 		}
@@ -176,41 +223,121 @@ void BlackjackGame::DealerTurn()
 
 void BlackjackGame::EndGame()
 {
-	if (player.GetHandValue() > 21)
+	int winnings = 0;
+	int handResult = CheckWin(1);
+	
+	if (player.split)
 	{
-		//Lose
-		cout << "\nHouse Wins.\n" << endl;
+		playerBet /= 2;
 	}
-	else if (dealer.GetHandValue() > player.GetHandValue() && dealer.GetHandValue() <= 21)
+
+	switch (handResult)
 	{
+	case 0:
 		//Lose
 		cout << "\nHouse Wins.\n" << endl;
 
-	} else {
+		break;
 
-		if (player.GetHandValue() == dealer.GetHandValue())
+	case 1:
+		//Push, return bet
+		cout << "\nPush, bet returned. \n" << endl;
+		player.AddChips(playerBet);
+
+		break;
+
+	case 2:
+		//Win
+
+		cout << "\nYou win!\n" << endl;
+
+		winnings = playerBet * 2;
+		player.AddChips(winnings);
+		break;
+
+	case 3:
+		//Blackjack win
+
+		cout << "\nBlackjack!\n" << endl;
+
+
+		winnings = playerBet + (playerBet * 1.5);
+		player.AddChips(winnings);
+		break;
+	}
+
+	if (player.split)
+	{
+		handResult = CheckWin(2);
+
+		switch (handResult)
 		{
+		case 0:
+			//Lose
+			cout << "\nHouse Wins.\n" << endl;
+
+			break;
+
+		case 1:
+			//Push, return bet
 			cout << "\nPush, bet returned. \n" << endl;
 			player.AddChips(playerBet);
+
+			break;
+
+		case 2:
+			//Win
+
+			cout << "\nYou win!\n" << endl;
+
+			winnings = playerBet * 2;
+			player.AddChips(winnings);
+			break;
+
+		case 3:
+			//Blackjack win
+
+			cout << "\nBlackjack!\n" << endl;
+
+
+			winnings = playerBet + (playerBet * 1.5);
+			player.AddChips(winnings);
+			break;
 		}
-		else if (player.GetHandValue() > dealer.GetHandValue() || dealer.GetHandValue() > 21)
+	}
+}
+
+int BlackjackGame::CheckWin(int checkHand)
+{
+	//Return 0 for lose, 1 for push, 2 for win, 3 for blackjack win
+
+	if (player.GetHandValue(checkHand) > 21)
+	{
+		//Lose
+		return 0;
+	}
+	else if (dealer.GetHandValue() > player.GetHandValue(checkHand) && dealer.GetHandValue() <= 21)
+	{
+		//Lose
+		return 0;
+
+	}
+	else {
+
+		if (player.GetHandValue(checkHand) == dealer.GetHandValue())
+		{
+			return 1;
+		}
+		else if (player.GetHandValue(checkHand) > dealer.GetHandValue() || dealer.GetHandValue() > 21)
 		{
 			//win
-			int winnings = 0;
-
 			if (player.IsBlackjack())
 			{
-				cout << "\nBlackjack!\n" << endl;
-
-				
-				winnings = playerBet + (playerBet * 1.5);
-				player.AddChips(winnings);
+				return 3;
 			}
 			else {
-				cout << "\nYou win!\n" << endl;
-
-				winnings = playerBet * 2;
-				player.AddChips(winnings);
+				
+				return 2;
 			}
 		}
 	}

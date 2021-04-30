@@ -23,9 +23,11 @@ public:
 
 	void Stand(); //Stands current hand
 
+	void Split(PlayingCard, PlayingCard); //Splits hand apart
+
 	void DisplayHand(); //Displays the cards in hand
 
-	int GetHandValue(); //Returns value of hand
+	int GetHandValue(int); //Returns value of hand
 
 	void AddChips(int); //Recieves winnings and adds them to the players chips
 
@@ -33,9 +35,11 @@ public:
 
 	bool IsBlackjack(); 
 
-	bool split;
-
 	int GetChips() { return chips; } //Returns chips
+
+	bool canSplit;
+
+	bool split;
 
 };
 

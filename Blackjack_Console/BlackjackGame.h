@@ -22,5 +22,7 @@ private:
 	void DealerTurn();
 
 	void EndGame(); //Checks player and dealers cards and determines winner
+
+	int CheckWin(int); //Checks win for specified deck 
 };
 

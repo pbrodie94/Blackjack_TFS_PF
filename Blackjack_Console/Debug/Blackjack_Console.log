@@ -1,3 +1,8 @@
 ﻿  BlackjackGame.cpp
-C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Blackjack_Console\BlackjackGame.cpp(206,26): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Blackjack_Console\BlackjackGame.cpp(264,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Blackjack_Console\BlackjackGame.cpp(303,25): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  BlackjackPlayer.cpp
+  Generating Code...
+C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Blackjack_Console\BlackjackPlayer.cpp(151): warning C4715: 'BlackjackPlayer::GetHandValue': not all control paths return a value
+C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Blackjack_Console\BlackjackGame.cpp(344): warning C4715: 'BlackjackGame::CheckWin': not all control paths return a value
   Blackjack_Console.vcxproj -> C:\Users\pbrod\Documents\VGD Toronto Film School\Semester 2\Programming Fundamentals 1\Labs\Blackjack_TFS_PF\Debug\Blackjack_Console.exe

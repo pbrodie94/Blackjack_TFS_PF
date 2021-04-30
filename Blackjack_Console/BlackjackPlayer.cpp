@@ -8,16 +8,24 @@ using namespace std;
 BlackjackHand handOne; 
 BlackjackHand handTwo;
 
+PlayingCard firstCard;
+PlayingCard secondCard;
+int numCards;
+
 BlackjackPlayer::BlackjackPlayer()
 {
 	BlackjackPlayer::chips = 1000;
 	BlackjackPlayer::split = false;
+	BlackjackPlayer::canSplit = false;
+	numCards = 0;
 }
 
 BlackjackPlayer::BlackjackPlayer(int startingChips)
 {
 	BlackjackPlayer::chips = startingChips;
 	BlackjackPlayer::split = false;
+	BlackjackPlayer::canSplit = false;
+	numCards = 0;
 }
 
 int BlackjackPlayer::PlaceBet()
@@ -53,9 +61,37 @@ int BlackjackPlayer::PlaceBet()
 
 void BlackjackPlayer::AddCards(PlayingCard newCard)
 {
-	handOne.AddCardName(newCard.GetCardName());
+	numCards++;
 
-	handOne.AddCardValue(newCard.GetCardNumber());
+	if (numCards == 1)
+	{
+		firstCard = newCard;
+	}
+	else if (numCards == 2)
+	{
+		secondCard = newCard;
+
+		if (firstCard.GetCardNumber() == secondCard.GetCardNumber())
+		{
+			BlackjackPlayer::canSplit = true;
+		}
+	}
+	else if (numCards == 3)
+	{
+		BlackjackPlayer::canSplit = false;
+	}
+
+	if (!handOne.stand)
+	{
+		handOne.AddCardName(newCard.GetCardName());
+
+		handOne.AddCardValue(newCard.GetCardNumber());
+	}
+	else {
+		handTwo.AddCardName(newCard.GetCardName());
+
+		handTwo.AddCardValue(newCard.GetCardNumber());
+	}
 }
 
 void BlackjackPlayer::Stand()
@@ -67,6 +103,25 @@ void BlackjackPlayer::Stand()
 	else {
 		handTwo.stand = true;
 	}
+}
+
+void BlackjackPlayer::Split(PlayingCard cardOne, PlayingCard cardTwo)
+{
+	BlackjackPlayer::split = true;
+
+	handOne = BlackjackHand();
+	handTwo = BlackjackHand();
+
+	handOne.AddCardName(firstCard.GetCardName());
+	handOne.AddCardValue(firstCard.GetCardNumber());
+	handOne.AddCardName(cardOne.GetCardName());
+	handOne.AddCardValue(cardOne.GetCardNumber());
+
+	handTwo.AddCardName(secondCard.GetCardName());
+	handTwo.AddCardValue(secondCard.GetCardNumber());
+	handTwo.AddCardName(cardTwo.GetCardName());
+	handTwo.AddCardValue(cardTwo.GetCardNumber());
+
 }
 
 void BlackjackPlayer::DisplayHand()
@@ -83,9 +138,16 @@ void BlackjackPlayer::DisplayHand()
 	cout << endl;
 }
 
-int BlackjackPlayer::GetHandValue()
+int BlackjackPlayer::GetHandValue(int hand)
 {
-	return handOne.handValue;
+	if (hand == 1)
+	{
+		return handOne.handValue;
+	}
+	else if (hand == 2)
+	{
+		return handTwo.handValue;
+	}
 }
 
 void BlackjackPlayer::AddChips(int c)
@@ -98,6 +160,8 @@ void BlackjackPlayer::ResetHand()
 	handOne = BlackjackHand();
 	handTwo = BlackjackHand();
 	BlackjackPlayer::split = false;
+	BlackjackPlayer::canSplit = false;
+	numCards = 0;
 }
 
 bool BlackjackPlayer::IsBlackjack()

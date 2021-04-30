@@ -46,6 +46,12 @@ void CardDeck::CreateDeck()
 
 PlayingCard CardDeck::DrawCard()
 {
+	//Card split debug code
+
+	//PlayingCard card = PlayingCard(2, 2);
+	//return card;
+
+
 	PlayingCard card; 
 	
 	if (deck.size() < 1)
@@ -58,7 +64,6 @@ PlayingCard CardDeck::DrawCard()
 	card = deck[deck.size() - 1];
 
 	deck.erase(deck.end() - 1);
-
 
 	return card;
 }
