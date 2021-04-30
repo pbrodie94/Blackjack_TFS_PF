@@ -24,9 +24,6 @@ int main()
 			//Start game with decksize selection
 			BlackjackGame game = BlackjackGame(deckSize);
 
-			//Delete object once the game is finished.
-			delete &game;
-
 			//Once game finishes, restart?
 			string goSelection = "";
 			cout << endl << "Game over, would you like to play again? type Y for yes, or any other key for no. ";
