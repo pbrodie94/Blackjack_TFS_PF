@@ -104,3 +104,10 @@ bool BlackjackPlayer::IsBlackjack()
 {
 	return handOne.blackJack;
 }
+
+void BlackjackPlayer::TakeChips(int amount)
+{
+	chips -= amount;
+
+	cout << "\nChips Remaining: $" << BlackjackPlayer::chips << endl;
+}

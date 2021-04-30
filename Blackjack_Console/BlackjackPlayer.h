@@ -17,6 +17,8 @@ public:
 
 	int PlaceBet(); //Allows player to place a bet
 
+	void TakeChips(int); //Takes chips without taking input
+
 	void AddCards(PlayingCard); //Adds a new card when dealt
 
 	void Stand(); //Stands current hand

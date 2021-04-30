@@ -20,10 +20,10 @@ void BlackjackDealer::DisplayCards()
 	if (hideCard)
 	{
 		cout << hand.cardNames << " ?\n";
-		cout << hand.handValue;
+		cout << "Total: " << hand.handValue;
 	}
 	else {
-		cout << hand.cardNames << "\n" << hand.handValue << "\n" << endl;
+		cout << hand.cardNames << "\nTotal: " << hand.handValue << "\n" << endl;
 	}
 }
 

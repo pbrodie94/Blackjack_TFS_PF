@@ -37,8 +37,13 @@ void BlackjackGame::StartRound()
 	player.AddCards(deck.DrawCard());
 	dealer.AddCard(deck.DrawCard());
 
-	player.DisplayHand();
 	//Display 1 dealer card and ? for the other
+	cout << "\nDealer Cards: ";
+	dealer.DisplayCards();
+
+	cout << "\n\nYour Cards: ";
+	player.DisplayHand();
+	cout << endl;
 
 	PlayGame();
 }
@@ -52,6 +57,7 @@ void BlackjackGame::PlayGame()
 	}
 
 	//Dealer takes turn
+	cout << "Dealer Turn: " << endl;
 	DealerTurn();
 
 	//If neither player or dealer busted, check who has the higher card value
@@ -71,8 +77,9 @@ void BlackjackGame::PlayerTurn()
 
 	//Check if both beginning cards have the same value, if so offer split
 	do {
-		cout << "Type 'H' - to hit, 'S' - to stand: ";
+		cout << "Type 'H' - to hit, 'D' - to Double Down, 'S' - to stand: ";
 		cin >> move;
+		cout << endl;
 
 		move = toupper(move);
 
@@ -95,7 +102,25 @@ void BlackjackGame::PlayerTurn()
 
 		case 'D':
 			//Double Down
-			turnNotDone = false;
+
+			if (player.GetChips() >= playerBet)
+			{
+				player.AddCards(deck.DrawCard());
+				player.TakeChips(playerBet);
+				playerBet *= 2;
+
+				cout << "\nNew bet: $" << playerBet << "\n" << endl;
+				player.DisplayHand();
+
+				turnNotDone = false;
+			}
+			else {
+
+				cout << "\nNot enough chips! Please enter another action.\n" << endl;
+
+				turnNotDone = true;
+			}
+			
 			break;
 
 		case 'P':
@@ -122,15 +147,30 @@ void BlackjackGame::PlayerTurn()
 
 void BlackjackGame::DealerTurn()
 {
+	bool hitAgain = true;
+
 	dealer.TakeTurn();
 	dealer.DisplayCards();
 
-	do {
+	if (player.GetHandValue() > 21)
+	{
+		hitAgain = false;
+	}
+
+	while (hitAgain) {
 
 		dealer.AddCard(deck.DrawCard());
 		dealer.DisplayCards();
 
-	} while (dealer.GetHandValue() < 17);
+		if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue())
+		{
+			hitAgain = false;
+		}
+		else {
+			hitAgain = true;
+		}
+
+	}
 
 }
 
