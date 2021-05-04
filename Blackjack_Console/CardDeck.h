@@ -15,7 +15,7 @@ private:
 
 public:
 
-	CardDeck() {};
+	CardDeck() {}; //Default constructor
 
 	CardDeck(int); //Initializes deck taking in how many decks (from 1 to 8)
 

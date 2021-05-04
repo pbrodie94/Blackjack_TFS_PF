@@ -17,9 +17,9 @@ private:
 
 	void PlayGame(); //Gameplay loop, has player take turn, and then dealer take turn.
 
-	void PlayerTurn();
+	void PlayerTurn(); //Allows player to take turn
 
-	void DealerTurn();
+	void DealerTurn(); //Allows dealer to take turn
 
 	void EndGame(); //Checks player and dealers cards and determines winner
 

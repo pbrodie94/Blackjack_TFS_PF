@@ -8,7 +8,7 @@ private:
 
 public:
 
-	BlackjackDealer();
+	BlackjackDealer(); //Default constructor
 
 	void DisplayCards(); //Displays cards
 

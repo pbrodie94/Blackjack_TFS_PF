@@ -26,9 +26,11 @@ BlackjackGame::BlackjackGame(int deckSize)
 
 void BlackjackGame::StartRound()
 {
+	//Re-initialize both the Dealer and Player for a new round
 	dealer = BlackjackDealer();
 	player.ResetHand();
 
+	//Prompt the player to place a bet
 	playerBet = player.PlaceBet();
 
 	//Dealing cards
@@ -41,6 +43,7 @@ void BlackjackGame::StartRound()
 	cout << "\nDealer Cards: ";
 	dealer.DisplayCards();
 
+	//Display the player's cards
 	cout << "\n\nYour Cards: ";
 	player.DisplayHand();
 	cout << endl;
@@ -50,7 +53,7 @@ void BlackjackGame::StartRound()
 
 void BlackjackGame::PlayGame()
 {
-	//Player takes turn
+	//Player takes turn, player should not do anything if they have a Blackjack
 	if (!player.IsBlackjack())
 	{
 		PlayerTurn();
@@ -60,7 +63,7 @@ void BlackjackGame::PlayGame()
 	cout << "Dealer Turn: " << endl;
 	DealerTurn();
 
-	//If neither player or dealer busted, check who has the higher card value
+	//Once both players have completed their turns, check the results
 	EndGame();
 
 	//If players chips are not 0, start new round
@@ -73,27 +76,42 @@ void BlackjackGame::PlayGame()
 void BlackjackGame::PlayerTurn()
 {
 	char move = NULL;
+	int numMoves = 0;
 	bool secondHand = false;
 	bool turnNotDone = false;
 
 	//Check if both beginning cards have the same value, if so offer split
 	do {
-		if (player.canSplit && !player.split)
+		//If the player's starting cards have the same value, give the option to split. Otherwise remove the option from the list
+		//Also only offer double down on the first turn
+
+		if (numMoves < 1)
 		{
-			cout << "Type 'H' - to hit, 'D' - to Double Down, 'P' - To Split, 'S' - to stand: ";
+			//First move, allow double downs
+			if (player.canSplit && !player.split)
+			{
+				cout << "Type 'H' - to hit, 'D' - to Double Down, 'P' - To Split, 'S' - to stand: ";
+			}
+			else {
+				cout << "Type 'H' - to hit, 'D' - to Double Down, 'S' - to stand: ";
+			}
 		}
 		else {
-			cout << "Type 'H' - to hit, 'D' - to Double Down, 'S' - to stand: ";
+			cout << "Type 'H' - to hit, 'S' - to stand: ";
 		}
+
+		//Take in player input
 		cin >> move;
 		cout << endl;
 
+		//Change player's input to uppercase
 		move = toupper(move);
 
 		switch (move)
 		{
 		case 'H':
 			//Hit
+			//Add a card to player's hand and display the result
 			player.AddCards(deck.DrawCard());
 			player.DisplayHand();
 
@@ -104,6 +122,7 @@ void BlackjackGame::PlayerTurn()
 			//Stand
 			player.Stand();
 
+			//If the player has splut their hand, allow them to play their second hand
 			if (player.split && !secondHand)
 			{
 				cout << "\nSecond Hand\n" << endl;
@@ -119,40 +138,56 @@ void BlackjackGame::PlayerTurn()
 		case 'D':
 			//Double Down
 
-			if (player.GetChips() >= playerBet)
+			if (numMoves < 1)
 			{
-				player.AddCards(deck.DrawCard());
-				player.TakeChips(playerBet);
-				playerBet *= 2;
+				//Check to make sure the player's chips allow for a double down
+				if (player.GetChips() >= playerBet)
+				{
+					//If so, add another card
+					player.AddCards(deck.DrawCard());
+					//Double the player's bet
+					player.TakeChips(playerBet);
+					playerBet *= 2;
 
-				cout << "\nNew bet: $" << playerBet << "\n" << endl;
-				player.DisplayHand();
+					//Display the new bet, then display the hand
+					cout << "\nNew bet: $" << playerBet << "\n" << endl;
+					player.DisplayHand();
 
-				turnNotDone = false;
+					turnNotDone = false;
+				}
+				else {
+					//Player does not have enough chips to double down
+					cout << "\nNot enough chips! Please enter another action.\n" << endl;
+
+					turnNotDone = true;
+				}
 			}
 			else {
-
-				cout << "\nNot enough chips! Please enter another action.\n" << endl;
+				//If the player is not able to double down
+				cout << "\nCannot perform this action, please try another move.\n" << endl;
 
 				turnNotDone = true;
 			}
-			
 			break;
 
 		case 'P':
 			//Split
-
+			//Double check that the player is able to split their hand
 			if (player.canSplit && !player.split && player.GetChips() >= playerBet)
 			{
+				//Call the split method and add two more cards to fill out the two hands
 				player.Split(deck.DrawCard(), deck.DrawCard());
 
+				//Take double the player's bet for the second hand
 				player.TakeChips(playerBet);
 				playerBet *= 2;
 
+				//Display the new bet amd the player's hand
 				cout << "\nNew bet: $" << playerBet << "\n" << endl;
 				player.DisplayHand();
 			}
 			else {
+				//If the player is not able to split
 				cout << "\nCannot perform this action, please try another move.\n" << endl;
 			}
 
@@ -160,16 +195,19 @@ void BlackjackGame::PlayerTurn()
 			break;
 
 		default:
+			//Error catch for invalid entries
 			cout << "\nInvalid entry, please try again. \n" << endl;
 			
 			turnNotDone = true;
 			break;
 		}
 
+		//After each move, check to see if the player has bust
 		if (player.GetHandValue(1) > 21 && !secondHand)
 		{
 			cout << "BUST!\n" << endl;
 			
+			//If the player has bust and they have split, allow them to play their second hand
 			if (!player.split)
 			{
 				turnNotDone = false;
@@ -182,12 +220,15 @@ void BlackjackGame::PlayerTurn()
 			}
 		}
 
+		//If player has split, check if their second hand has bust
 		if (player.split && player.GetHandValue(2) > 21)
 		{
 			cout << "BUST!\n" << endl;
 			player.Stand();
 			turnNotDone = false;
 		}
+
+		numMoves++;
 
 	} while (turnNotDone);
 }
@@ -196,12 +237,23 @@ void BlackjackGame::DealerTurn()
 {
 	bool hitAgain = true;
 
+	//Call the dealers take turn method, and display their cards
 	dealer.TakeTurn();
 	dealer.DisplayCards();
 
-	if (player.GetHandValue(1) > 21)
+	//if the player has split, check both hands
+	if (player.split)
 	{
-		hitAgain = false;
+		if (player.GetHandValue(1) > 21 && player.GetHandValue(2) > 21)
+		{
+			hitAgain = false;
+		}
+	}
+	else {
+		if (player.GetHandValue(1) > 21)
+		{
+			hitAgain = false;
+		}
 	}
 
 	while (hitAgain) {
@@ -209,14 +261,41 @@ void BlackjackGame::DealerTurn()
 		dealer.AddCard(deck.DrawCard());
 		dealer.DisplayCards();
 
-		if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue(1))
+		//If player has split
+		if (player.split)
 		{
-			hitAgain = false;
+			//Check both hands to see what the dealer must beat
+			if (player.GetHandValue(1) > player.GetHandValue(2))
+			{
+				if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue(1))
+				{
+					hitAgain = false;
+				}
+				else {
+					hitAgain = true;
+				}
+			}
+			else {
+
+				if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue(2))
+				{
+					hitAgain = false;
+				}
+				else {
+					hitAgain = true;
+				}
+			}
 		}
 		else {
-			hitAgain = true;
-		}
 
+			if (dealer.GetHandValue() > 17 || dealer.GetHandValue() > player.GetHandValue(1))
+			{
+				hitAgain = false;
+			}
+			else {
+				hitAgain = true;
+			}
+		}
 	}
 
 }

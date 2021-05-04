@@ -2,20 +2,24 @@
 
 #include <string>
 
+//Sets the card to Ace of Spades by default
 PlayingCard::PlayingCard() {
 	PlayingCard::cardNumber = 1;
 	PlayingCard::cardSuit = 1;
 }
 
+//Sets the card at creation
 PlayingCard::PlayingCard(int c, int s) {
 	PlayingCard::cardNumber = c;
 	PlayingCard::cardSuit = s;
 }
 
+//Returns the card name based on the card's suit and number
 string PlayingCard::GetCardName()
 {
 	string name;
 
+	//Sets the value of the card
 	switch (PlayingCard::cardNumber)
 	{
 	case 1:
@@ -49,6 +53,7 @@ string PlayingCard::GetCardName()
 		break;
 	}
 
+	//Gives the playing card a suit
 	switch (PlayingCard::cardSuit)
 	{
 	case 1:
@@ -79,6 +84,7 @@ string PlayingCard::GetCardName()
 	return name;
 }
 
+//Returns the card's number
 int PlayingCard::GetCardNumber()
 {
 	return PlayingCard::cardNumber;

@@ -33,13 +33,13 @@ public:
 
 	void ResetHand(); //Resets hand
 
-	bool IsBlackjack(); 
+	bool IsBlackjack(); //Getter to return whether the hand is a blackjack
 
 	int GetChips() { return chips; } //Returns chips
 
-	bool canSplit;
+	bool canSplit; //Is true if the player can split or not
 
-	bool split;
+	bool split; //Is true if the player has split
 
 };
 
